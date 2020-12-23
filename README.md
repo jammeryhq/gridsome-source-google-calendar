@@ -22,7 +22,7 @@ Simple gridsome source plugin to fetch google calendar data
 Until we have published the package to npm, please add this line in the `dependencies`.
 
 ```js
-'@jammeryhq/gridsome-source-google-calendar' : 'github:jammeryhq/gridsome-source-google-calendar'
+"@jammeryhq/gridsome-source-google-calendar" : "github:jammeryhq/gridsome-source-google-calendar"
 ```
 
 # Usage
