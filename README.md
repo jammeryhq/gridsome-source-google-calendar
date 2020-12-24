@@ -73,67 +73,34 @@ https://cloud.google.com/docs/authentication/api-keys?visit_id=63744321453509066
 
 # Example
 
-## GraphQL Query
+## User can choose a date to filter the result 
 
-```
-{
-  allGoogleCalendar {
-    edges {
-      node {
-        id
-        summary
-        description
-        created
-        updated
-        allDay
-        start {
-          date
-          timestamp
-          timeZone
-        }
-        end {
-          date
-          timestamp
-          timeZone
-        }
-      }
-    }
-  }
-}
-```
+In this simple example, we're fetching all events and filtering the data based on the choosen date from the user.
 
-## Result
-```
-{
-  "data": {
-    "allGoogleCalendar": {
-      "edges": [
-        {
-          "node": {
-            "id": "0upkuq917mla1iigkgkk59ao7b",
-            "summary": "test event with date/time",
-            "description": "",
-            "created": "2020-12-23T10:40:35.000Z",
-            "updated": "2020-12-23T10:40:35.108Z",
-            "allDay": false,
-            "start": {
-              "date": "2021-07-15T12:00:00+02:00",
-              "timestamp": 1626343200,
-              "timeZone": "Europe/Berlin"
-            },
-            "end": {
-              "date": "2021-07-15T13:00:00+02:00",
-              "timestamp": 1626346800,
-              "timeZone": "Europe/Berlin"
-            }
-          }
-        },
-        // ... more nodes
-      ]
-    }
-  }
-}
-```
+https://gist.github.com/noxify/c65c95d752be0ca2fff863bb0256d731
+
+# Available GraphQL fields
+
+| Fieldname       | Type                 |
+| --------------- | -------------------- |
+| id              | ID!                  |
+| summary         | String               |
+| description     | String               |
+| created         | Date                 |
+| updated         | Date                 |
+| allDay          | Boolean              |
+| start           | GoogleCalendar_Start |
+| start.date      | Date                 |
+| start.timeZone  | String               |
+| start.timestamp | Int                  |
+| end             | GoogleCalendar_End   |
+| start.date      | Date                 |
+| start.timeZone  | String               |
+| start.timestamp | Int                  |
+| _raw            | GoogleCalendar_Raw   |
+
+> `_raw` is only available, if you set `includeRaw` to `true` in the `gridsome.config.js`.
+> It includes the whole event object which we got from the google calendar api.
 
 # Credits
 
