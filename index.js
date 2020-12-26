@@ -57,7 +57,8 @@ class GoogleCalendar {
           updated: event.updated,
           allDay: (event.start.date) ? true : false,
           start: startDate,
-          end: endDate
+          end: endDate,
+          location: event.location || ''
         }
 
         if( this.options.includeRaw ) {
