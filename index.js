@@ -8,7 +8,8 @@ class GoogleCalendar {
       calendarId: undefined,
       apiKey: undefined,
       includeRaw: false,
-      typeName: 'GoogleCalendar'
+      typeName: 'GoogleCalendar',
+      includeRecurringEvents: false
     }
   }
 
@@ -83,7 +84,7 @@ class GoogleCalendar {
   async getCalendarData() {
     let data = []
     await this.googleApi.events.list(
-      { calendarId: this.options.calendarId })
+      { calendarId: this.options.calendarId, singleEvents: this.options.includeRecurringEvents })
       .then(res => {
         data = res.data
       }).catch(err => {
