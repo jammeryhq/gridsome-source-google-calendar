@@ -1,7 +1,7 @@
 {
   "name": "@jammeryhq/gridsome-source-google-calendar",
   "description": "Gridsome source to fetch google calendar entries",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "author": "JammeryHQ",
   "license": "MIT",
