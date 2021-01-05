@@ -62,14 +62,18 @@ https://cloud.google.com/docs/authentication/api-keys?visit_id=63744321453509066
 
 # Configuration
 
-| Property   | Type    | Required | Default                          |
-| ---------- | ------- | -------- | -------------------------------- |
-| typeName   | String  | Yes      | `GoogleCalendar`                 |
-| calendarId | String  | Yes      | `XXX@@group.calendar.google.com` |
-| apiKey     | String  | Yes      | `AIzaSXXXXX3TC5ewuBYXXX0wEsH`    |
-| includeRaw | Boolean | No       | `false`                          |
+| Property               | Type    | Required | Default                          |
+| ---------------------- | ------- | -------- | -------------------------------- |
+| typeName               | String  | Yes      | `GoogleCalendar`                 |
+| calendarId             | String  | Yes      | `XXX@@group.calendar.google.com` |
+| apiKey                 | String  | Yes      | `AIzaSXXXXX3TC5ewuBYXXX0wEsH`    |
+| includeRaw             | Boolean | No       | `false`                          |
+| includeRecurringEvents | Boolean | No       | `false`                          |
 
 > `includeRaw` adds a new field `_raw` with the complete API Response
+
+> `includeRecurringEvents` sets the `singleEvents` property internally
+> From the API docs: Whether to expand recurring events into instances and only return single one-off events and instances of recurring events, but not the underlying recurring events themselves. Optional. The default is False.
 
 # Example
 
