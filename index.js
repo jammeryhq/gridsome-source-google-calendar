@@ -30,11 +30,11 @@ class GoogleCalendar {
 
     api.loadSource(async (actions) => {
 
-      const spinner = ora(`Fetching events.`).start();
+      const spinner = ora(`Fetching events`).start();
       const items = await this.getCalendarData(this.getOptions())
       spinner.stopAndPersist({
         symbol: '✔',
-        text: `Fetched ${items.length} events.`,
+        text: `Fetched ${items.length} events`,
       });
 
       let eventCollection = actions.addCollection(this.options.typeName)
