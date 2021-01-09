@@ -7,7 +7,8 @@
   "license": "MIT",
   "repository": "https://www.github.com/jammeryhq/gridsome-source-google-calendar",
   "dependencies": {
-    "googleapis":"^66.0.0",
-    "moment-timezone": "^0.5.32"
+    "googleapis":"^67.0.0",
+    "moment-timezone": "^0.5.32",
+    "ora": "^5.2.0"
   }
 }

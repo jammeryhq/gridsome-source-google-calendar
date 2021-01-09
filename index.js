@@ -1,6 +1,9 @@
 const { google } = require('googleapis')
 const moment = require('moment-timezone')
 const SCOPES = [ 'https://www.googleapis.com/auth/calendar.readonly' ]
+const RESERVED_PROPS = ['calendarId', 'singleEvents', 'pageToken']
+const ora = require('ora');
+
 
 class GoogleCalendar {
   static defaultOptions() {
@@ -9,7 +12,8 @@ class GoogleCalendar {
       apiKey: undefined,
       includeRaw: false,
       typeName: 'GoogleCalendar',
-      includeRecurringEvents: false
+      includeRecurringEvents: false,
+      apiParams: {}
     }
   }
 
@@ -22,22 +26,29 @@ class GoogleCalendar {
     this.options = options
     this.googleApi = this.initializeApi()
 
+    this.calendarInfo = null
+
     api.loadSource(async (actions) => {
 
-      const data = await this.getCalendarData()
+      const spinner = ora(`Fetching events.`).start();
+      const items = await this.getCalendarData(this.getOptions())
+      spinner.stopAndPersist({
+        symbol: '✔',
+        text: `Fetched ${items.length} events.`,
+      });
 
       let eventCollection = actions.addCollection(this.options.typeName)
 
-      data.items.forEach(event => {
+      items.forEach(event => {
 
         let startDate = {
-          date: (event.start.date) ? moment(event.start.date).tz(data.timeZone, true).format() : moment(event.start.dateTime).format(),
-          timeZone: data.timeZone
+          date: (event.start.date) ? moment(event.start.date).tz(this.calendarInfo.timeZone, true).format() : moment(event.start.dateTime).format(),
+          timeZone: this.calendarInfo.timeZone
         }
 
         let endDate = {
-          date: (event.end.date) ? moment(event.end.date).tz(data.timeZone, true).format() : moment(event.end.dateTime).format(),
-          timeZone: data.timeZone
+          date: (event.end.date) ? moment(event.end.date).tz(this.calendarInfo.timeZone, true).format() : moment(event.end.dateTime).format(),
+          timeZone: this.calendarInfo.timeZone
         }
 
         startDate = {
@@ -81,16 +92,45 @@ class GoogleCalendar {
     });
   }
 
-  async getCalendarData() {
-    let data = []
-    await this.googleApi.events.list(
-      { calendarId: this.options.calendarId, singleEvents: this.options.includeRecurringEvents })
-      .then(res => {
-        data = res.data
-      }).catch(err => {
-        console.log(err)
-      })
-    return data
+  getOptions() {
+    let config = {
+      calendarId: this.options.calendarId,
+      singleEvents: this.options.includeRecurringEvents
+    }
+
+    let userConfig = this.options.apiParams
+
+    RESERVED_PROPS.forEach(k => {delete userConfig[k]})
+
+    return Object.assign( config, userConfig )
+  }
+
+  // based on 
+  // https://github.com/googleapis/google-api-nodejs-client/issues/1786#issuecomment-520558979
+  getCalendarData(config, allEvents = [], pageToken) {
+    return new Promise((resolve, reject) => {
+      this.googleApi.events.list({
+        pageToken: pageToken,
+        ...config
+      }, (err, res) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        
+        allEvents = allEvents.concat(res.data.items)
+        this.calendarInfo = res.data
+        delete this.calendarInfo.items
+
+        if (res.data.nextPageToken) {
+          this.getCalendarData(config, allEvents, res.data.nextPageToken).then((resAllEvents) => {
+            resolve(resAllEvents);
+          });
+        } else {
+          resolve(allEvents);
+        }
+      });
+    });
   }
 }
 
