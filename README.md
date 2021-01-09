@@ -62,18 +62,23 @@ https://cloud.google.com/docs/authentication/api-keys?visit_id=63744321453509066
 
 # Configuration
 
-| Property               | Type    | Required | Default                          |
-| ---------------------- | ------- | -------- | -------------------------------- |
-| typeName               | String  | Yes      | `GoogleCalendar`                 |
-| calendarId             | String  | Yes      | `XXX@@group.calendar.google.com` |
-| apiKey                 | String  | Yes      | `AIzaSXXXXX3TC5ewuBYXXX0wEsH`    |
-| includeRaw             | Boolean | No       | `false`                          |
-| includeRecurringEvents | Boolean | No       | `false`                          |
+| Property               | Type    | Required | Default                          | Description                                                                                                                                                                    |
+| ---------------------- | ------- | -------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| typeName               | String  | Yes      | `GoogleCalendar`                 | Name of the GraphQL Collection                                                                                                                                                 |
+| calendarId             | String  | Yes      | `XXX@@group.calendar.google.com` | The Calendar identifier                                                                                                                                                              |
+| apiKey                 | String  | Yes      | `AIzaSXXXXX3TC5ewuBYXXX0wEsH`    | The API Key                                                                                                                                                                   |
+| includeRaw             | Boolean | No       | `false`                          | Adds a new field `_raw` with the complete API Response                                                                                                                         |
+| includeRecurringEvents | Boolean | No       | `false`                          | Whether to expand recurring events into instances and only return single one-off events and instances of recurring events, but not the underlying recurring events themselves. |
+| apiParams              | Object  | No       | `{}`                             | Allows you to define custom api parameters                                                                                                                                  |
 
-> `includeRaw` adds a new field `_raw` with the complete API Response
+## API Parameter
 
-> `includeRecurringEvents` sets the `singleEvents` property internally
-> From the API docs: Whether to expand recurring events into instances and only return single one-off events and instances of recurring events, but not the underlying recurring events themselves. Optional. The default is False.
+You can find the list of the allowed `apiParams` here: https://developers.google.com/calendar/v3/reference/events/list#parameters
+
+The following parameters are excluded and can't be set via the `apiParams`:
+- `calendarId`
+- `singleEvents` ( use property `includeRecurringEvents` to set the value )
+- `pageToken`
 
 # Example
 
