@@ -8,7 +8,7 @@
   "repository": "https://www.github.com/jammeryhq/gridsome-source-google-calendar",
   "dependencies": {
     "googleapis":"^67.0.0",
-    "moment-timezone": "^0.5.32",
+    "moment-timezone": "^0.5.35",
     "ora": "^5.2.0"
   }
 }
